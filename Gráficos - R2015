@@ -1,0 +1,803 @@
+library(plotrix)
+library(ggplot2)
+library(grid)
+library(png)
+library(RColorBrewer)
+library(extrafont)
+
+a <- c(1113513, 1261638)
+pie3D(a, labels = c("Homens - 46,88%", "Mulheres - 53,11%"), edges = 5000, col = c("seashell4", "slategrey"))
+
+##
+
+b <- c(2156876, 218275)
+pie3D(b, labels = c("Alfabetizados - 90,81%", "Analfabetos - 9,19%"), edges = 5000, col = c("seashell4", "slategrey"))
+
+##
+
+
+cid <- c(0.49, 0.61, 0.73, 0.60, 0.73, 0.81)
+ccid <- c("br", "br", "br", "bh", "bh", "bh")
+canos <- c(1991, 2000, 2010, 1991, 2000, 2010)
+c <- data.frame(cid, ccid, canos)
+
+
+ggplot(c, aes(x = canos, y = cid)) + 
+        #annotation_custom(grob = logo4, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept=c(0, 0.2, 0.4, 0.6, 0.8)) +
+        geom_bar(aes(fill = ccid), 
+                 stat = "identity", 
+                 position = "dodge", 
+                 width = 5) +
+        xlab("Anos") + ylab("IDHM") +
+        #ggtitle("IDHM - Brasil e Belo Horizonte, por ano") +
+        ggtitle(NULL) +
+        theme_CFAMGBH + 
+        scale_x_continuous(breaks = c(1991, 2000, 2010), 
+                           expand=c(0,0)) +
+        scale_fill_manual(values = c(cor1, cor2), 
+                          name = element_blank(),
+                          labels = c("Belo Horizonte", "Brasil"))
+        
+##
+
+dvalor <- c(0.74, 0.792, 0.841, 0.727, 0.784, 0.856, 0.406, 0.617, 0.737)
+ddim <- c("Renda", "Renda", "Renda", "Longevidade", "Longevidade", "Longevidade", "Educação", "Educação", "Educação")
+dano <- c(1991, 2000, 2010, 1991, 2000, 2010, 1991, 2000, 2010)
+d <- data.frame(dvalor, ddim, dano)
+
+ggplot(d, aes(x = dano, y = dvalor)) + 
+        #annotation_custom(grob = logo4, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept=c(0, 0.2, 0.4, 0.6, 0.8)) +
+        geom_bar(aes(fill = ddim), 
+                 stat = "identity", 
+                 position = "dodge", 
+                 #color = "black",
+                 width = 5) +
+        xlab("Anos") + ylab("IDHM") +
+        #ggtitle("IDHM - Belo Horizonte, por ano e cada dimensão do indicador") +
+        theme_CFAMGBH + 
+        scale_x_continuous(breaks = c(1991, 2000, 2010), 
+                           expand=c(0,0)) +
+        scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8)) +
+        scale_fill_manual(values = c(cor1, cor2, cor3), 
+                          name = element_blank(),
+                          labels = c("Educação", "Longevidade", "Renda"))
+
+##
+
+evalor <- c(0.731, 0.730, 0.838, 0.638, 0.810, 0.841, 0.856, 0.737)
+eid <- c("Minas Gerais", "Minas Gerais", "Minas Gerais", "Minas Gerais", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte")
+edim <- c("Geral", "Renda", "Longevidade", "Educação", "Geral", "Renda", "Longevidade", "Educação")
+e <- data.frame(evalor, eid, edim)
+e$edim <- factor(edim, levels = c("Geral", "Renda", "Longevidade", "Educação"))
+
+ggplot(e, aes(x = edim, y = evalor)) + 
+        #annotation_custom(grob = logo4, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept=c(0, 0.2, 0.4, 0.6, 0.8)) +
+        geom_bar(aes(fill = eid), 
+                 stat = "identity", 
+                 position = "dodge", 
+                 #color = "black",
+                 width = 0.7) +
+        xlab("Dimensões do IDHM") + ylab("IDHM") +
+        #ggtitle("IDHM - Belo Horizonte e Minas Gerais, 2010, por cada dimensão do indicador") +
+        theme_CFAMGBH + 
+        scale_x_discrete(breaks = c("Geral", "Renda", "Longevidade", "Educação")) +
+        scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8)) +
+        scale_fill_manual(values = c(cor1, cor2), 
+                          name = element_blank(),
+                          labels = c("Belo Horizonte", "Minas Gerais"))
+
+##
+
+fvalor <- c(0.493, 0.612, 0.727, 0.647, 0.692, 0.739, 0.662, 0.727, 0.816, 0.279, 0.456, 0.637,
+            0.478, 0.624, 0.731, 0.618, 0.68, 0.73, 0.689, 0.759, 0.838, 0.257, 0.47, 0.638,
+            0.602, 0.726, 0.81, 0.74, 0.792, 0.841, 0.727, 0.784, 0.856, 0.406, 0.617, 0.737)
+fanos <- c(1991, 2000, 2010, 1991, 2000, 2010, 1991, 2000, 2010, 1991, 2000, 2010,
+           1991, 2000, 2010, 1991, 2000, 2010, 1991, 2000, 2010, 1991, 2000, 2010,
+           1991, 2000, 2010, 1991, 2000, 2010, 1991, 2000, 2010, 1991, 2000, 2010)
+fdim <- c("Geral", "Geral", "Geral", "Renda", "Renda", "Renda", "Longevidade", "Longevidade", "Longevidade", "Educação", "Educação", "Educação",
+          "Geral", "Geral", "Geral", "Renda", "Renda", "Renda", "Longevidade", "Longevidade", "Longevidade", "Educação", "Educação", "Educação",
+          "Geral", "Geral", "Geral", "Renda", "Renda", "Renda", "Longevidade", "Longevidade", "Longevidade", "Educação", "Educação", "Educação")
+fid <- c("Brasil", "Brasil", "Brasil", "Brasil", "Brasil", "Brasil", "Brasil", "Brasil", "Brasil", "Brasil", "Brasil", "Brasil",
+         "Minas Gerais", "Minas Gerais", "Minas Gerais", "Minas Gerais", "Minas Gerais", "Minas Gerais", "Minas Gerais", "Minas Gerais", "Minas Gerais", "Minas Gerais", "Minas Gerais", "Minas Gerais",
+         "Belo Horizonte", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte", "Belo Horizonte")
+f <- data.frame(fvalor, fdim, fid, fanos)
+f$fdim <- factor(fdim, levels = c("Geral", "Renda", "Longevidade", "Educação"))
+f$fid <- factor(fid, levels = c("Brasil", "Minas Gerais", "Belo Horizonte"))
+
+ggplot(f, aes(x = fanos, y = fvalor)) + 
+        #annotation_custom(grob = logo4, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept=c(0, 0.2, 0.4, 0.6, 0.8)) +
+        geom_bar(aes(fill = fid), 
+                 stat = "identity", 
+                 position = "dodge", 
+                 #color = "black",
+                 width = 5) +
+        facet_grid(. ~ fdim) +
+        xlab("Anos") + ylab("IDHM") +
+        #ggtitle("IDHM - Brasil, Minas Gerais e Belo Horizonte, \npor ano e por cada dimensão do indicador") +
+        theme_CFAMGBH + 
+        scale_x_continuous(breaks = c(1991, 2000, 2010), 
+                           expand=c(0,0)) +
+        scale_y_continuous(breaks = c(0, 0.2, 0.4, 0.6, 0.8)) +
+        scale_fill_manual(values = c(cor1, cor2, cor3), 
+                          name = element_blank(),
+                          labels = c("Brasil", "Minas Gerais", "Belo Horizonte")) +
+        theme(axis.text.x = element_text(angle = 45,
+                                         vjust = 0.7,
+                                         hjust = 0.65),
+              strip.text.x = element_text(colour = "white"),
+              strip.text.y = element_text(colour = "white"),
+              strip.background = element_rect(colour=cor1, 
+                                              fill=cor1)) 
+
+##
+
+gvalor <- c(1315000, 15657134000, 45651221000, 8496132000, 11620906000)
+gid <- c("Agropecuária", "Indústria", "Serviços", "Administração", "Impostos")
+g <- data.frame(gvalor, gid)
+g$gid <- factor(gid, levels = c("Agropecuária", "Indústria", "Serviços", "Administração", "Impostos"))
+
+ggplot(g, aes(x = gid, y = gvalor)) +
+        #annotation_custom(grob = logo4, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 10000000000, 20000000000, 30000000000, 40000000000)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        xlab("Setores") + ylab("Valor Adicionado Bruto e Impostos") +
+        #ggtitle("Belo Horizonte - Valor Adicionado Bruto por setor da economia \ne Impostos, a preços correntes") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(0, 10000000000, 20000000000, 30000000000, 40000000000),
+                           labels = c("R$ 0", "R$ 10 bilhões", "R$ 20 bilhões", "R$ 30 bilhões", "R$ 40 bilhões"))
+
+
+##
+
+hvalor <- c(934000000, 210000000, 248000000)
+hid <- c("Total de Exportações", "Principal Produto - Tubos de Ferro ou Aço", "Principal Destino: Estados Unidos")
+h <- data.frame(hvalor, hid)
+h$hid <- factor(hid, levels = c("Total de Exportações", "Principal Produto - Tubos de Ferro ou Aço", "Principal Destino: Estados Unidos"))
+
+ggplot(h, aes(x = hid, y = hvalor)) +
+        #annotation_custom(grob = logo4, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 250000000, 500000000, 750000000, 1000000000)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        xlab(NULL) + ylab("Valor das Exportações") +
+        #ggtitle("Belo Horizonte - Perfil de Exportações") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(0, 250000000, 500000000, 750000000, 1000000000),
+                           labels = c("R$ 0", "R$ 250 milhões", "R$ 500 milhões", "R$ 750 milhões", "R$ 1 bilhão")) +
+        scale_x_discrete(labels = c("Total de Exportações", "Principal Produto: \nTubos de Ferro ou Aço", "Principal Destino: \nEstados Unidos"))
+
+##
+
+ivalor <- c(22, 22, 22, 7.5, 6.1, 5, 2.9, 2.3, 1.2, 9)
+iid <- c("Tubos de Ferro ou Aço", "Aviões", "Café", "Ferro Fundido","Aparelhos Ortopédicos", "Minério de Ferro", "Construções Pré-Fabricadas", "Pedras Preciosas", "Turbinas a Gás", "Outros")
+i <- data.frame(ivalor, iid)
+i$iid <- factor(iid, levels = c("Tubos de Ferro ou Aço", "Aviões", "Café", "Ferro Fundido","Aparelhos Ortopédicos", "Minério de Ferro", "Construções Pré-Fabricadas", "Pedras Preciosas", "Turbinas a Gás", "Outros"))
+
+ggplot(i, aes(x = iid, y = ivalor)) +
+        #annotation_custom(grob = logo4, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 5, 10, 15, 20, 25)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        xlab("Mercadoria Exportada") + ylab("Participação da Mercadoria no \nMontante Total Exportado") +
+        #ggtitle("Belo Horizonte - Perfil de Exportações") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(0, 5, 10, 15, 20, 25),
+                           labels = c("00%","05%", "10%", "15%", "20%", "25%")) +
+        scale_x_discrete(breaks = c("Tubos de Ferro ou Aço", "Aviões", "Café", "Ferro Fundido","Aparelhos Ortopédicos", "Minério de Ferro", "Construções Pré-Fabricadas", "Pedras Preciosas", "Turbinas a Gás", "Outros"),
+                           labels = c("Tubos de \nFerro ou Aço", "Aviões", "Café", "Ferro \nFundido","Aparelhos \nOrtopédicos", "Minério \nde Ferro", "Construções \nPré-Fabricadas", "Pedras \nPreciosas", "Turbinas \na Gás", "Outros")) +
+        theme(axis.text.x = element_text(angle = 45,
+                                         vjust = 0.7,
+                                         hjust = 0.65))
+
+##
+
+jvalor <- c(27, 11, 6.8, 5.1, 4.7, 4.1, 4, 3.6, 3.5, 3.3, 2.9, 2.6, 2.4, 2.1, 1.6, 1.5, 1.4, 1.3, 1.2, 9.9)
+jid <- c("Estados Unidos", "Canadá", "Paraguai", "China", "Alemanha", "Venezuela", "Bélgica", "México", "França", "Holanda", "Colômbia", "Japão", "Reino Unido", "Espanha", "Dinamarca", "Irlanda", "Peru", "Itália", "Bolívia", "Outros")
+j <- data.frame(jvalor, jid)
+j$jid <- factor(jid, levels = c("Estados Unidos", "Canadá", "Paraguai", "China", "Alemanha", "Venezuela", "Bélgica", "México", "França", "Holanda", "Colômbia", "Japão", "Reino Unido", "Espanha", "Dinamarca", "Irlanda", "Peru", "Itália", "Bolívia", "Outros"))
+
+ggplot(j, aes(x = jid, y = jvalor)) +
+        #annotation_custom(grob = logo4, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 5, 10, 15, 20, 25)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        xlab("Destino das Exportações") + ylab("Participação de Cada Destino no \nMontante Exportado") +
+        #ggtitle("Belo Horizonte - Destinos das Exportações") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(0, 5, 10, 15, 20, 25),
+                           labels = c("00%","05%", "10%", "15%", "20%", "25%")) +
+        scale_x_discrete(breaks = c("Estados Unidos", "Canadá", "Paraguai", "China", "Alemanha", "Venezuela", "Bélgica", "México", "França", "Holanda", "Colômbia", "Japão", "Reino Unido", "Espanha", "Dinamarca", "Irlanda", "Peru", "Itália", "Bolívia", "Outros"),
+                         labels = c("Estados \nUnidos", "Canadá", "Paraguai", "China", "Alemanha", "Venezuela", "Bélgica", "México", "França", "Holanda", "Colômbia", "Japão", "Reino \nUnido", "Espanha", "Dinamarca", "Irlanda", "Peru", "Itália", "Bolívia", "Outros")) +
+        theme(axis.text.x = element_text(angle = 90,
+                                         vjust = 0.35,
+                                         hjust = 0.5))
+        
+
+
+###
+
+kvalor <- c(747000000, 222000000, 186000000)
+kid <- c("Total de Importações", "Principal Produto - Aviões", "Principal Origem: Brasil")
+k <- data.frame(kvalor, kid)
+k$kid <- factor(kid, levels = c("Total de Importações", "Principal Produto: Aviões", "Principal Origem: Brasil"))
+
+ggplot(k, aes(x = kid, y = kvalor)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 250000000, 500000000, 750000000, 1000000000)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        xlab(NULL) + ylab("Valor das Importações") +
+        #ggtitle("Belo Horizonte - Perfil de Importações") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(0, 250000000, 500000000, 750000000, 1000000000),
+                           labels = c("R$ 0", "R$ 250 milhões", "R$ 500 milhões", "R$ 750 milhões", "R$ 1 bilhão")) +
+        scale_x_discrete(labels = c("Total de Importações", "Principal Produto: \nAviões", "Principal Origem: \nBrasil"))
+
+##
+
+lvalor <- c(30, 14, 8.5, 2.2, 2.2, 2.2, 1.3, 1.2, 1.1, 37.3)
+lid <- c("Aviões", "Artigos de Vias Férreas", "Soros e Vacinas", "Instrumentos Médicos","Maquinários para Escavação", "Turbinas a Gás", "Tubos de Ferro", "Reagentes de Laboratório", "Impressoras Industriais", "Outros")
+l <- data.frame(lvalor, lid)
+l$lid <- factor(lid, levels = c("Aviões", "Artigos de Vias Férreas", "Soros e Vacinas", "Instrumentos Médicos","Maquinários para Escavação", "Turbinas a Gás", "Tubos de Ferro", "Reagentes de Laboratório", "Impressoras Industriais", "Outros"))
+
+ggplot(l, aes(x = lid, y = lvalor)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 5, 10, 15, 20, 25, 30, 35)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        xlab("Mercadoria Importada") + ylab("Participação da Mercadoria no \nMontante Total Importado") +
+        #ggtitle("Belo Horizonte - Perfil de Importações") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(0, 5, 10, 15, 20, 25, 30, 35),
+                           labels = c("00%","05%", "10%", "15%", "20%", "25%", "30%", "35%")) +
+        scale_x_discrete(breaks = c("Aviões", "Artigos de Vias Férreas", "Soros e Vacinas", "Instrumentos Médicos","Maquinários para Escavação", "Turbinas a Gás", "Tubos de Ferro", "Reagentes de Laboratório", "Impressoras Industriais", "Outros"),
+                         labels = c("Aviões", "Artigos de \nVias Férreas", "Soros e \nVacinas", "Instrumentos \nMédicos","Maquinários \npara Escavação", "Turbinas a \nGás", "Tubos de \nFerro", "Reagentes \nde Laboratório", "Impressoras \nIndustriais", "Outros")) +
+        theme(axis.text.x = element_text(angle = 45,
+                                         vjust = 0.7,
+                                         hjust = 0.65))
+
+##
+
+mvalor <- c(25, 25, 14, 7.8, 5.6, 4.4, 3, 2.2, 1.6, 1.2, 1.1, 9.1)
+mid <- c("Brasil", "China", "Estados Unidos", "Itália", "França", "Alemanha", "Japão","Canadá", "Chile", "Hong Kong", "Coreia do Sul", "Outros")
+m <- data.frame(mvalor, mid)
+m$mid <- factor(mid, levels = c("Brasil", "China", "Estados Unidos", "Itália", "França", "Alemanha", "Japão","Canadá", "Chile", "Hong Kong", "Coreia do Sul", "Outros"))
+
+ggplot(m, aes(x = mid, y = mvalor)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 5, 10, 15, 20, 25)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        xlab("Destino das Importações") + ylab("Participação de Cada Destino no \nMontante Total Importado") +
+        #ggtitle("Belo Horizonte - Destinos das Importações") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(0, 5, 10, 15, 20, 25),
+                           labels = c("00%","05%", "10%", "15%", "20%", "25%")) +
+        scale_x_discrete(breaks = c("Brasil", "China", "Estados Unidos", "Itália", "França", "Alemanha", "Japão","Canadá", "Chile", "Hong Kong", "Coreia do Sul", "Outros"),
+                         labels = c("Brasil", "China", "Estados\nUnidos", "Itália", "França", "Alemanha", "Japão", "Canadá", "Chile", "Hong\nKong", "Coreia\ndo Sul", "Outros")) +
+        theme(axis.text.x = element_text(angle = 90,
+                                         vjust = 0.35,
+                                         hjust = 0.8))
+
+##
+
+nvalor <- c(222072, 262194, 282552, 251481, 260524, 272285, 250032, 254573, 249273, 249693, 274060, 291110, 340530, 338100, 331362, 154028, 193764, 212953, 249350, 268124, 286118, 105181, 141853, 187315, 198794, 245334, 262183)
+nid <- c("Barreiro", "Barreiro", "Barreiro", "Centro Sul", "Centro Sul", "Centro Sul", "Leste", "Leste", "Leste", "Nordeste", "Nordeste", "Nordeste", "Noroeste", "Noroeste", "Noroeste", "Norte", "Norte", "Norte", "Oeste", "Oeste", "Oeste", "Pampulha", "Pampulha", "Pampulha", "Venda Nova" , "Venda Nova" , "Venda Nova")
+nano <- c(rep(c(1991, 2000, 2010), 9))
+n <- data.frame(nvalor, nid, nano)
+n$nano <- factor(nano, levels = c(1991, 2000, 2010))
+
+ggplot(n, aes(x = nid, y = nvalor)) + 
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 50000, 100000, 150000, 200000, 250000, 300000, 350000)) +
+        geom_bar(aes(fill = nano), 
+                 stat = "identity", 
+                 position = "dodge", 
+                 #color = "black",
+                 width = 0.5) +
+        xlab(NULL) + ylab("População") +
+        ##ggtitle("Belo Horizonte - População, por ano e por cada divisão regional") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(0, 50000, 100000, 150000, 200000, 250000, 300000, 350000),
+                           labels = c("0", "50 mil", "100 mil", "150 mil", "200 mil", "250 mil", "300 mil", "350 mil")) +
+        scale_x_discrete(labels = c("Barreiro", "Centro\nSul", "Leste", "Nordeste", "Noroeste", "Norte", "Oeste", "Pampulha", "Venda\nNova")) +
+        scale_fill_manual(values = c(cor1, cor2, cor3), 
+                          name = element_blank()) +
+        theme(axis.text.x = element_text(angle = 45,
+                                         vjust = 0.65,
+                                         hjust = 0.60))
+
+##
+
+ovalor <- c(48, 31, 9, 7, 5)
+oid <- c("Sociedade Civil", "Prefeitura", "Equipe Técnica", "Câmara", "Governo Estadual")
+o <- data.frame(ovalor, oid)
+o$oid <- factor(oid, levels = c("Sociedade Civil", "Prefeitura", "Equipe Técnica", "Câmara", "Governo Estadual"))
+
+ggplot(o, aes(x = oid, y = ovalor)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 12.5, 25, 37.5, 50)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        xlab(NULL) + ylab("Participação Percentual no Macrozoneamento") +
+        #ggtitle("Participação de Cada Entidade no Macrozoneamento") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(0, 12.5, 25, 37.5, 50),
+                           labels = c("00%","12.5%", "25%", "37.5%", "50%")) +
+        scale_x_discrete(breaks = c("Sociedade Civil", "Prefeitura", "Equipe Técnica", "Câmara", "Governo Estadual"),
+                         labels = c("Sociedade \nCivil", "Prefeitura", "Equipe \nTécnica", "Câmara", "Governo \nEstadual"))
+
+
+##
+
+##Gráficos Marcelo
+
+pvalor <- c(211685459, 705940, 8274551, 238, 6580414)
+pid <- c("Receita de Contribuições dos Segurados", "Outras Receitas de Contribuições", "Receita patrimonial", "Receita de Serviços", "Outras Receitas Correntes")
+p <- data.frame(pvalor, pid)
+p$pid <- factor(pid, levels = c("Receita de Contribuições dos Segurados", "Outras Receitas de Contribuições", "Receita patrimonial", "Receita de Serviços", "Outras Receitas Correntes"))
+
+ggplot(p, aes(x = pid, y = pvalor)) +
+        annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(seq(0, 227246602, length.out = 5))) +
+        geom_bar(stat = "identity",
+                 color = "black",
+                 width = 0.5) +
+        xlab(NULL) + ylab("% de Receitas Realizadas") +
+        ggtitle("2015 - Receitas Correntes Realizadas por Fonte") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(seq(0, 227246602, length.out = 5)),
+                           labels = c("0%", "25%", "50%", "75%", "100%")) +
+        scale_x_discrete(breaks = c("Receita de Contribuições dos Segurados", "Outras Receitas de Contribuições", "Receita patrimonial", "Receita de Serviços", "Outras Receitas Correntes"),
+                         labels = c("Receita de \nContribuições dos \nSegurados", "Outras Receitas \nde Contribuições", "Receita \nPatrimonial", "Receita de \nServiços", "Outras Receitas \nCorrentes")) +
+        theme(axis.text.x = element_text(angle = 45,
+                                         vjust = 0.8,
+                                         hjust = 0.60))
+
+qvalor <- c(193276952, 15862451, 2546056)
+qid <- c("Ativo", "Inativo", "Pensionista")
+q <- data.frame(qvalor, qid)
+q$qid <- factor(id, levels = c("Ativo", "Inativo", "Pensionista"))
+
+ggplot(q, aes(x = qid, y = qvalor)) +
+        annotation_custom(grob = logo3, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(seq(0, 227246602, length.out = 5))) +
+        geom_bar(stat = "identity",
+                 color = "black",
+                 width = 0.5) +
+        xlab(NULL) + ylab("% de Receitas Realizadas") +
+        ggtitle("2015 - Receitas de Contribuições do Pessoal Civil \nRealizadas por Fonte") +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(seq(0, 227246602, length.out = 5)),
+                           labels = c("0%", "25%", "50%", "75%", "100%")) +
+        scale_x_discrete(breaks = c("Ativo", "Inativo", "Pensionista"),
+                         labels = c("Ativo", "Inativo", "Pensionista")) +
+        theme(axis.text.x = element_text(angle = 45,
+                                         vjust = 0.8,
+                                         hjust = 0.60))
+
+rvalor <- c(186315576.08, 846941, 12098295.58, 11982.1, 13535533.97, 4300, 199023910.17, 1932463.28, 20512465.79, 41374, 4973823.06, 0)
+rid <- c("Receitas de Contribuições dos Segurados", "Outras Receitas de Contribuições", "Receita Patrimonial", "Receita de Serviços", "Outras Receitas Correntes", "Receitas de Capital", "Receitas de Contribuições dos Segurados", "Outras Receitas de Contribuições", "Receita Patrimonial", "Receita de Serviços", "Outras Receitas Correntes", "Receitas de Capital")
+rano <- c(rep(2014, 6), rep(2015, 6))
+r <- data.frame(rvalor, rid, rano)
+r$rid <- factor(rid, levels = c("Receitas de Contribuições dos Segurados", "Outras Receitas de Contribuições", "Receita Patrimonial", "Receita de Serviços", "Outras Receitas Correntes", "Receitas de Capital"))
+r$rano <- factor(rano, levels = c(2014, 2015))
+
+ggplot(r, aes(x = rid, y = rvalor)) +
+        annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 50000000, 100000000, 150000000, 200000000)) +
+        geom_bar(aes(fill = rano),
+                 position = "dodge",
+                 stat = "identity",
+                 color = "black",
+                 width = 0.5) +
+        xlab(NULL) + ylab("Receitas Realizadas") +
+        ggtitle("2014 e 2015 - Receitas Previdenciárias Realizadas por Fonte\n (Exceto Intra-Orçamentárias)") +
+        theme_CFAMGBH +
+        scale_x_discrete(breaks = c("Receitas de Contribuições dos Segurados", "Outras Receitas de Contribuições", "Receita Patrimonial", "Receita de Serviços", "Outras Receitas Correntes", "Receitas de Capital"),
+                         labels = c("Receitas \nde Contribuições \ndos Segurados", "Outras \nReceitas de \nContribuições", "Receita \nPatrimonial", "Receita de \nServiços", "Outras Receitas \nCorrentes", "Receitas de \nCapital")) +
+        scale_y_continuous(breaks = c(0, 50000000, 100000000, 150000000, 200000000),
+                           labels = c("0 milhões", "50 milhões", "100 milhões", "150 milhões", "200 milhões")) +
+        scale_fill_manual(values = c("seashell4", "slategrey"),
+                          name = element_blank()) +
+        theme(axis.text.x = element_text(angle = 45,
+                                         vjust = 0.8,
+                                         hjust = 0.60))
+
+#################
+
+s <- read.xlsx("./relatório/7/GRafico 7.1.xlsx", 1)
+colnames(s) = c("sid", "sRO", "sDO")
+s <- melt(data = s, value.name = "X")
+colnames(s) = c("sid", "sdim", "svalor")
+
+ggplot(s, aes(x = sid, y = svalor*1000000)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 500000000, 1000000000, 1500000000, 2000000000, 2500000000, 3000000000)) +
+        geom_bar(aes(fill = sdim),
+                 position = "dodge",
+                 stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        xlab(NULL) + ylab(NULL) +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_x_discrete(labels = c("Educação", "Outras \nVinculações", "Previdência \nSocial - RPPS", "Saúde", "Seguridade \nSocial")) +
+        scale_y_continuous(breaks = c(0, 500000000, 1000000000, 1500000000, 2000000000, 2500000000, 3000000000),
+                           labels = c("R$0", "R$0,5 bilhões", "R$1 bilhão", "R$1,5 bilhões", "R$2 bilhões", "R$2,5 bilhões", "R$3 bilhões")) +
+        scale_fill_manual(values = c(cor1, cor2),
+                          labels = c("Receita Orçamentária",
+                                     "Despesa Orçamentária"),
+                          name = element_blank()) +
+        theme(axis.text.x = element_text(angle = 45,
+                                         vjust = 0.8,
+                                         hjust = 0.60))
+
+##########
+
+tvalor <- c(2326991.57, 5591254.27, 1882582.62, 3088324.57, 1927181.15, 4481290.32)
+tid <- c("Patrimônio", "Música", "Literatura", "Audiovisual", "Artes Visuais", "Artes Cênicas")
+tper <- c("12,06 %", "28,97 %", "9,76 %", "16,00 %", "9,99 %", "23,22 %")
+t <- data.frame(tvalor, tid, tper)
+t$tid <- factor(tid, levels = c("Patrimônio", "Música", "Literatura", "Audiovisual", "Artes Visuais", "Artes Cênicas"))
+
+ggplot(t, aes(x = tid, y = tvalor)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(seq(0, 6000000, length.out = 7))) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        geom_label(y = tvalor + 250000, 
+                   aes(label = tper), 
+                   stat= "identity", 
+                   fontface = "bold", 
+                   fill = cor1, 
+                   colour = "white") +
+        xlab(NULL) + ylab("Valor Incetivado") +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_y_continuous(breaks = c(seq(0, 6000000, length.out = 7)),
+                           labels = c("R$ 0 milhões", 
+                                      "R$ 1 milhão", 
+                                      "R$ 2 milhões", 
+                                      "R$ 3 milhões", 
+                                      "R$ 4 milhões", 
+                                      "R$ 5 milhões", 
+                                      "R$ 6 milhões")) +
+        theme(axis.text.x = element_text(angle = 45,
+                                         vjust = 0.8,
+                                         hjust = 0.60))
+
+##########
+uhomem <- c(67689, 73647, 86338, 90895, 106240, 110707, 102211, 84424, 78564, 75266, 66370, 52018, 39958, 28991, 21442, 14504, 8440, 3979, 1394, 358, 78)
+umulher <- c(65522, 71221, 85153, 91815, 112538, 120055, 111603, 94405, 90757, 89662, 81578, 66901, 53230, 40022, 31962, 23814, 16960, 8976, 3963, 1247, 254)
+uid <- c("0 a 05 anos", "05 a 09 anos", "10 a 14 anos", "15 a 19 anos", "20 a 24 anos", "25 a 29 anos", "30 a 34 anos", "35 a 39 anos", "40 a 44 anos", "45 a 49 anos", "50 a 54 anos", "55 a 59 anos", "60 a 64 anos", "65 a 69 anos", "70 a 74 anos", "75 a 79 anos", "80 a 84 anos", "85 a 89 anos", "90 a 94 anos", "95 a 99 anos", "Mais de 100 anos")
+u <- data.frame(uid, uhomem, umulher)
+u <- melt(u, id = "uid")
+
+ggplot(u, aes(x = uid, y = value, fill = variable)) + 
+        #geom_vline(xintercept = (0:21)) +
+        geom_bar(stat = "identity", aes(x = uid, y = value/100000), width = 0.3) +
+        geom_bar(data = subset(u, variable == "uhomem"),
+                 stat = "identity",
+                 position = "dodge", 
+                 fill = cor1,
+                 width = 0.6) +
+        geom_label(data = subset(u, variable == "uhomem"), 
+                   aes(label = format(value, 
+                                      big.mark = "."), 
+                       y = uhomem + 15000), 
+                   stat= "identity", 
+                   vjust = "middle", 
+                   hjust = "middle",
+                   fill = cor1,
+                   size = 2.9,
+                   colour = "white",
+                   fontface = "bold") +
+        geom_bar(data = subset(u, 
+                               variable == "umulher"),
+                 stat = "identity", 
+                 position = "dodge", 
+                 width = 0.6,
+                 fill = cor2,
+                 mapping = aes(y = -value)) +
+        geom_label(data = subset(u, 
+                                 variable == "umulher"), 
+                   aes(label = format(value, 
+                                      big.mark = "."), 
+                       y = -umulher - 15000), 
+                   stat= "identity", 
+                   vjust = "middle", 
+                   hjust = "middle",
+                   fill = cor2,
+                   size = 2.9,
+                   colour = "white",
+                   fontface = "bold") +
+        xlab("Idade") + 
+        ylab("População") +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        theme(panel.grid.major.x = element_blank()) +
+        coord_flip() +
+        scale_y_continuous(breaks = c(-135000, -90000, -45000, 0, 45000, 90000, 135000),
+                           labels = c("135.000", "90.000", "45.000", "0", "45.000", "90.000", "135.000"),
+                           limits = c(-140000, 140000)) +
+        scale_fill_manual(values = c(cor1, cor2), 
+                          name = element_blank(),
+                          labels = c("Homem", "Mulher"))
+
+######
+
+vvalorp <- c("35,09%", "17,86%", "4,18%", "2,14%", "0,45%", "24,15%", "1,96%", "0,20%", "9,82%", "3,32%", "0,83%", "0%")
+vvalor <- c(3203737093, 1630336881, 381944390, 195061961, 41231870, 2204272718, 179305135, 17859117, 896904753, 302710840, 75621014, 0)
+vid <- c("Cidade Saudável", "Educação", "Cidade com Mobilidade", "Cidade Segura", "Prosperidade", "Modernidade", "Cidade com Todas as Vilas", "Cidade Compartilhada", "Cidade Sustentável", "Cidade de Todos", "Cultura", "Integração Metropolitana")
+v <- data.frame(vid, vvalorp, vvalor)
+v$vid <- factor(vid, levels = c("Cidade Saudável", "Educação", "Cidade com Mobilidade", "Cidade Segura", "Prosperidade", "Modernidade", "Cidade com Todas as Vilas", "Cidade Compartilhada", "Cidade Sustentável", "Cidade de Todos", "Cultura", "Integração Metropolitana"))
+
+ggplot(v, aes(x = vid, y = vvalor)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 500000000, 1000000000, 1500000000, 2000000000, 2500000000, 3000000000, 3500000000)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        geom_label(y = vvalor + 150000000, aes(label = vvalorp), stat= "identity", fontface = "bold", fill = cor1, colour = "white") +
+        xlab(NULL) + ylab(NULL) +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_x_discrete(labels = c("Cidade \nSaudável", "Educação", "Cidade com \nMobilidade", "Cidade Segura ", "Prosperidade", "Modernidade", "Cidade com \nTodas as Vilas ", "Cidade \nCompartilhada ", "Cidade \nSustentável", "Cidade \nde Todos", "Cultura", "Integração \nMetropolitana")) +
+        scale_y_continuous(breaks = c(0, 500000000, 1000000000, 1500000000, 2000000000, 2500000000, 3000000000, 3500000000),
+                           labels = c("R$ 0", "R$ 500 milhões", "R$ 1 bilhão", "R$ 1,5 bilhões", "R$ 2 bilhões", "R$ 2,5 bilhões", "3 bilhões", "3,5 bilhões")) +
+        theme(axis.text.x = element_text(angle = 90,
+                                         vjust = 0.5,
+                                         hjust = 0.5))
+
+###
+
+wvalorp <- c("61,40%", "9,39%", "4,76%", "0%", "0,85%", "0,63%", "7,39%", "0,003%", "12,66%", "2,42%", "0,42%", "0%")
+wvalor <- c(1370450970, 209645249, 106386727, 0, 19122100, 14176923, 164979461, 713763, 282617736, 54166041, 9423985, 0)
+wid <- c("Cidade Saudável", "Educação", "Cidade com Mobilidade", "Cidade Segura", "Prosperidade", "Modernidade", "Cidade com Todas as Vilas", "Cidade Compartilhada", "Cidade Sustentável", "Cidade de Todos", "Cultura", "Integração Metropolitana")
+w <- data.frame(wid, wvalorp, wvalor)
+w$wid <- factor(wid, levels = c("Cidade Saudável", "Educação", "Cidade com Mobilidade", "Cidade Segura", "Prosperidade", "Modernidade", "Cidade com Todas as Vilas", "Cidade Compartilhada", "Cidade Sustentável", "Cidade de Todos", "Cultura", "Integração Metropolitana"))
+
+ggplot(w, aes(x = wid, y = wvalor)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 250000000, 500000000, 750000000, 1000000000, 1250000000, 1500000000)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.6) +
+        geom_label(y = wvalor + 80000000, aes(label = wvalorp), stat= "identity", fontface = "bold", fill = cor1, colour = "white") +
+        xlab(NULL) + ylab(NULL) +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_x_discrete(labels = c("Cidade \nSaudável", "Educação", "Cidade com \nMobilidade", "Cidade Segura ", "Prosperidade", "Modernidade", "Cidade com \nTodas as Vilas ", "Cidade \nCompartilhada ", "Cidade \nSustentável", "Cidade \nde Todos", "Cultura", "Integração \nMetropolitana")) +
+        scale_y_continuous(breaks = c(0, 250000000, 500000000, 750000000, 1000000000, 1250000000, 1500000000),
+                           labels = c("R$ 0", "R$ 250 milhões", "R$ 500 milhões", "R$ 750 milhões", "R$ 1 bilhão", "R$ 1,250 bilhões", "R$ 1,5 bilhões")) +
+        theme(axis.text.x = element_text(angle = 90,
+                                         vjust = 0.5,
+                                         hjust = 0.5))
+
+###
+
+aaaorcado <- c(17828228, 2372028500, 3660532650, 49344147, 1944351531, 95944462, 406542024, 1692139738, 373870169, 921792814, 215331345 , 2288630)
+aaaexecutado <- c(17859120.46, 2204272791.48, 3203737115.64, 41231883.19, 1630336903.39, 75621020.53, 302710902.48, 896904785.81, 179305149.07, 381944397.73, 195061961, 0)
+aaaAR <- c("Cidade Compartilhada", "Modernidade", "Cidade Saudável", "Prosperidade", "Educação", "Cultura", "Cidade de Todos", "Cidade Sustentável", "Cidade com Todas as Vilas", "Cidade com Mobilidade", "Cidade Segura", "Integração Metropolitana")
+
+aaa <- data.frame(aaaAR, aaaorcado, aaaexecutado)
+aaa$aaaAR <- factor(aaaAR, levels = c("Cidade Saudável", "Educação", "Cidade com Mobilidade", "Cidade Segura", "Prosperidade", "Modernidade", "Cidade com Todas as Vilas", "Cidade Compartilhada", "Cidade Sustentável", "Cidade de Todos", "Cultura", "Integração Metropolitana"))
+
+aaa <- melt(aaa, id.vars = "aaaAR", measure.vars = c("aaaorcado", "aaaexecutado"))
+
+ggplot(aaa, aes(x = aaaAR, y = value, fill = variable)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 500000000, 1000000000, 1500000000, 2000000000, 2500000000, 3000000000, 3500000000)) +
+        geom_bar(position = "dodge",
+                 stat = "identity",
+                 #color = "black",
+                 width = 0.6) +
+        xlab(NULL) + ylab(NULL) +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_x_discrete(labels = c("Cidade \nSaudável", "Educação", "Cidade com \nMobilidade", "Cidade Segura ", "Prosperidade", "Modernidade", "Cidade com \nTodas as Vilas ", "Cidade \nCompartilhada ", "Cidade \nSustentável", "Cidade \nde Todos", "Cultura", "Integração \nMetropolitana")) +
+        scale_y_continuous(breaks = c(0, 500000000, 1000000000, 1500000000, 2000000000, 2500000000, 3000000000, 3500000000),
+                           labels = c("R$ 0", "R$ 500 milhões", "R$ 1 bilhão", "R$ 1,5 bilhões", "R$ 2 bilhões", "R$ 2,5 bilhões", "R$ 3 bilhões", "R$ 3,5 bilhões")) +
+        theme(axis.text.x = element_text(angle = 90,
+                                         vjust = 0.5,
+                                         hjust = 0.5)) +
+        scale_fill_manual(values = c(cor1, cor2), 
+                          name = element_blank(),
+                          labels = c("Valor Orçado", "Valor Executado"))
+
+###
+
+aaborcado <- c(17828228, 2372028500, 3660532650, 49344147, 1944351531, 95944462, 406542024, 1692139738, 373870169, 921792814, 215331345 , 2288630)
+aabexecutado <- c(17859120.46, 2204272791.48, 3203737115.64, 41231883.19, 1630336903.39, 75621020.53, 302710902.48, 896904785.81, 179305149.07, 381944397.73, 195061961, 0)
+aabAR <- c("Cidade Compartilhada", "Modernidade", "Cidade Saudável", "Prosperidade", "Educação", "Cultura", "Cidade de Todos", "Cidade Sustentável", "Cidade com Todas as Vilas", "Cidade com Mobilidade", "Cidade Segura", "Integração Metropolitana")
+
+aab <- data.frame(aabAR, aaborcado, aabexecutado)
+aab$aabAR <- factor(aabAR, levels = c("Cidade Saudável", "Educação", "Cidade com Mobilidade", "Cidade Segura", "Prosperidade", "Modernidade", "Cidade com Todas as Vilas", "Cidade Compartilhada", "Cidade Sustentável", "Cidade de Todos", "Cultura", "Integração Metropolitana"))
+
+aab$perorc <- aaborcado/sum(aaborcado)
+aab$perexec<- aabexecutado/sum(aabexecutado)
+
+aabm <- melt(aab, id.vars = "aabAR", measure.vars = c("perorc", "perexec"))
+
+ggplot(aabm, aes(x = aabAR, y = value, fill = variable)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 5/100, 10/100, 15/100, 20/100, 25/100, 30/100, 35/100)) +
+        geom_bar(position = "dodge",
+                 stat = "identity",
+                 #color = "black",
+                 width = 0.6) +
+        #geom_label(aes(label = wvalorp), stat= "identity", vjust = -0.5, fontface = "bold") +
+        xlab(NULL) + ylab(NULL) +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_x_discrete(labels = c("Cidade\nSaudável", "Educação", "Cidade com\nMobilidade", "Cidade Segura ", "Prosperidade", "Modernidade", "Cidade com\nTodas as Vilas ", "Cidade\nCompartilhada ", "Cidade\nSustentável", "Cidade\nde Todos", "Cultura", "Integração\nMetropolitana")) +
+        scale_y_continuous(breaks = c(0, 5/100, 10/100, 15/100, 20/100, 25/100, 30/100, 35/100),
+                           labels = c("0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%")) +
+        theme(axis.text.x = element_text(angle = 90,
+                                         vjust = 0.5,
+                                         hjust = 0.5)) +
+        scale_fill_manual(values = c(cor1, cor2), 
+                          name = element_blank(),
+                          labels = c("Percentual do valor total orçado para a AR", "Percentual do valor total executado para a AR"))
+
+###
+
+aac <- read.xlsx("D:/Users/joao.medeiros/Documents/Relatório/3/TABELA 3.02.xlsx", 
+                 1, 
+                 header = TRUE, 
+                 stringsAsFactors = F,
+                 colClasses = c("character", rep("numeric",6)))
+
+aac <- aac[2:22, 1:7]
+colnames(aac) <- c("Função", "Valor Orçado", "AV", "Valor Empenhado", "bla", "Valor Liquidado", "bla2")
+aac$Funções <- c("Saúde", "Educação", "Saneamento", "Previdência", "Urbanismo", "Administração", "Transporte", "Encargos Especiais", "Habitação", "Assistência Social", "Legislativa", "Gestão Ambiental", "Trabalho", "Ciência Tecnologia", "Segurança Pública", "Cultura", "Desporto e Lazer", "Comércio e Serviços", "Direitos da Cidadania", "Agricultura", "Reserva de Contingência")
+
+aac$Funções <- factor(aac$Funções, levels = c("Saúde", "Educação", "Saneamento", "Previdência", "Urbanismo", "Administração", "Transporte", "Encargos Especiais", "Habitação", "Assistência Social", "Legislativa", "Gestão Ambiental", "Trabalho", "Ciência Tecnologia", "Segurança Pública", "Cultura", "Desporto e Lazer", "Comércio e Serviços", "Direitos da Cidadania", "Agricultura", "Reserva de Contingência"))
+
+aac1 <- aac[1:10, c(8, 6, 4, 2)]
+aac2 <- aac[11:21, c(8, 6, 4, 2)]
+
+aacm1 <- melt(aac1, id.vars = "Funções", measure.vars = c("Valor Orçado", "Valor Empenhado", "Valor Liquidado"))
+aacm2 <- melt(aac2, id.vars = "Funções", measure.vars = c("Valor Orçado", "Valor Empenhado", "Valor Liquidado"))
+
+ggplot(aacm1, aes(x = Funções, y = value, fill = variable)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 500000000, 1000000000, 1500000000, 2000000000, 2500000000, 3000000000, 3500000000)) +
+        geom_bar(position = "dodge",
+                 stat = "identity",
+                 #color = "black",
+                 width = 0.5) +
+        xlab(NULL) + ylab(NULL) +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_x_discrete(labels = c("Saúde", "Educação", "Saneamento", "Previdência", "Urbanismo", "Administ. ", "Transporte", "Encargos\nEspeciais", "Habitação", "Assistência\nSocial")) +
+        scale_y_continuous(breaks = c(0, 500000000, 1000000000, 1500000000, 2000000000, 2500000000, 3000000000, 3500000000),
+                           labels = c("R$ 0", "R$ 500 milhões", "R$ 1 bilhão", "R$ 1,5 bilhões", "R$ 2 bilhões", "R$ 2,5 bilhões", "R$ 3 bilhões", "R$ 3,5 bilhões")) +
+        theme(axis.text.x = element_text(angle = 90,
+                                         vjust = 0.5,
+                                         hjust = 0.5)) +
+        scale_fill_manual(values = c(cor1, 
+                                     cor2, 
+                                     cor3), 
+                          name = element_blank(),
+                          labels = c("Valor orçado para a função", 
+                                     "Valor empenhado para a função", 
+                                     "Valor liquidado para a função"))
+
+ggplot(aacm2, aes(x = Funções, y = value, fill = variable)) +
+        annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 50000000, 100000000, 150000000, 200000000)) +
+        geom_bar(position = "dodge",
+                 stat = "identity",
+                 color = "black",
+                 width = 0.5) +
+        xlab(NULL) + ylab(NULL) +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_x_discrete(labels = c("Legislativa", "Gestão\nAmbiental", "Trabalho", "Ciência\nTecnologia", "Segurança\nPública", "Cultura", "Desporto\ne Lazer", "Comércio\ne Serviços", "Direitos da\nCidadania", "Agricultura", "Reserva de\nContingência ")) +
+        scale_y_continuous(breaks = c(0, 50000000, 100000000, 150000000, 200000000),
+                           labels = c("R$ 0", "R$ 50 milhões", "R$ 100 milhões", "R$ 150 milhões", "R$ 200 milhões")) +
+        theme(axis.text.x = element_text(angle = 90,
+                                         vjust = 0.5,
+                                         hjust = 0.5)) +
+        scale_fill_manual(values = c("slategrey", 
+                                     "seashell4", 
+                                     "gray80"), 
+                          name = element_blank(),
+                          labels = c("Valor orçado para a função", 
+                                     "Valor empenhado para a função", 
+                                     "Valor liquidado para a função"))
+
+###
+
+aadvalor2 <- c(2231682955, 6725267196, 0, 172035621)
+aadid <- c("Programas Sustentadores", "Programas Associados", "Programas PPP", "Programas Apoio Administrativo")
+aad <- data.frame(aadid, aadvalor2)
+
+aad$aadid <- factor(aad$aadid, levels = c("Programas Sustentadores", "Programas Associados", "Programas PPP", "Programas Apoio Administrativo"))
+
+aad$aadper <- aadvalor2/sum(aadvalor2)
+
+ggplot(aad, aes(x = aadid, y = aadvalor2)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 1500000000, 3000000000, 4500000000, 6000000000, 7500000000)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.6) +
+        geom_label(y = aadvalor2 + 300000000, aes(label = percent(aadper)), stat= "identity", fontface = "bold", fill = cor1, colour = "white") +
+        xlab(NULL) + ylab(NULL) +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_x_discrete(labels = c("Programas\nSustentadores", "Programas\nAssociados", "Programas\nPPP", "Programas\nApoio\nAdministrativo")) +
+        scale_y_continuous(breaks = c(0, 1500000000, 3000000000, 4500000000, 6000000000, 7500000000),
+                           labels = c("R$ 0", "R$ 1,5 bilhões", "R$ 3 bilhões", "R$ 4,5 bilhões", "R$ 6 bilhões", "R$ 7,5 bilhões")) +
+        theme(axis.text.x = element_text(angle = 0,
+                                         vjust = 0.5,
+                                         hjust = 0.5))
+
+###
+
+AAEid <- c("Orçaram e Empenharam", "Não Orçaram e Empenharam", "Orçaram e Não Empenharam", "Não Orçaram e Não Empenharam")
+AAEvalor <- c(604, 12, 312, 186)
+AAE <- data.frame(AAEid, AAEvalor)
+
+AAE$AAEid <- factor(AAE$AAEid, levels = c("Orçaram e Empenharam", "Não Orçaram e Empenharam", "Orçaram e Não Empenharam", "Não Orçaram e Não Empenharam"))
+
+AAE$AAEper <- AAEvalor/sum(AAEvalor)
+
+ggplot(AAE, aes(x = AAEid, y = AAEvalor)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_hline(yintercept = c(0, 100, 200, 300, 400, 500, 600, 700)) +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.6) +
+        geom_label(y = AAEvalor + 30, aes(label = percent(AAEper)), stat= "identity", fontface = "bold", fill = cor1, colour = "white") +
+        xlab(NULL) + ylab(NULL) +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_x_discrete(labels = c("Orçaram e\nEmpenharam", "Não Orçaram e\nEmpenharam", "Orçaram e\nNão Empenharam", "Não Orçaram e\nNão Empenharam")) +
+        scale_y_continuous(breaks = c(0, 100, 200, 300, 400, 500, 600, 700),
+                           labels = c("0 Subações", "100 Subações", "200 Subações", "300 Subações", "400 Subações", "500 Subações", "600 Subações", "700 Subações")) +
+        theme(axis.text.x = element_text(angle = 15,
+                                         vjust = 0.8,
+                                         hjust = 0.45))
+
+###
+
+AAFid <- c("Prefeitura", "Governo Estadual", "Câmara Municipal", "Sociedade Civil", "Equipe Técnica")
+AAFvalor <- c(347, 56, 79, 538, 100)
+AAFperc <- AAFvalor/1120
+AAF <- data.frame(AAFid, AAFvalor, AAFperc)
+
+AAF$AAFid <- factor(AAF$AAFid, levels = c("Prefeitura", "Governo Estadual", "Câmara Municipal", "Sociedade Civil", "Equipe Técnica"))
+
+ggplot(AAF, aes(x = AAFid, y = AAFvalor)) +
+        #annotation_custom(grob = logo2, xmin=-Inf, xmax=Inf)  +
+        geom_bar(stat = "identity",
+                 #color = "black",
+                 width = 0.6) +
+        geom_label(y = AAFvalor + 20, aes(label = percent(AAFperc)), stat= "identity", fontface = "bold", fill = cor1, colour = "white") +
+        xlab(NULL) + ylab("Participantes do Macrozoneamento") +
+        ggtitle(NULL) +
+        theme_CFAMGBH +
+        scale_x_discrete(labels = c("Prefeitura", "Governo\nEstadual", "Câmara\nMunicipal", "Sociedade\nCivil", "Equipe\nTécnica")) +
+        scale_y_continuous(breaks = c(0, 150, 300, 450, 600),
+                           labels = c("0 pessoas", "150 Pessoas", "300 Pessoas", "450 Pessoas", "600 Pessoas")) +
+        theme(axis.text.x = element_text(angle = 0,
+                                         vjust = 0.5,
+                                         hjust = 0.5))
