@@ -1,0 +1,11 @@
+date.diff <- function(a, b){
+        
+        (as.Date(as.character(a), format = "%d/%m/%Y") - as.Date(as.character(b), format = "%d/%m/%Y")) * -1
+        
+}
+
+date.diff2 <- function(a, b){
+        
+        format(as.Date(as.character(a), format = "%d/%m/%Y") + b, format = "%d/%m/%Y")
+        
+}
