@@ -1,0 +1,46 @@
+library(ggplot2)
+library(grid)
+library(png)
+library(RColorBrewer)
+library(extrafont)
+library(xlsx)
+library(data.table)
+library(bit64)
+library(plyr)
+library(dplyr)
+library(reshape2)
+library(tidyr)
+setwd("D:/Users/joao.medeiros/Documents")
+
+theme_CFAMGBH <- theme(
+        
+        panel.grid.major.y = element_line(color = "black", size = 0.4),
+        panel.grid.major.x = element_blank(),
+        panel.background = element_rect(fill = "white"),
+        text = element_text(size = 12, 
+                            face = "bold",
+                            family = "Verdana"),
+        axis.text = element_text(color = "black", 
+                                 size = 12,
+                                 face = "bold",
+                                 family = "Verdana"),
+        legend.position="bottom",
+        legend.direction="vertical"
+        
+)
+
+
+percent <- function(x, digits = 2, format = "f", ...) {
+        paste0(formatC(100 * x, format = format, digits = digits, ...), "%")
+}
+
+cor1 <- rgb(49, 75, 92, maxColorValue = 255); cor2 <- rgb(69, 178, 157, maxColorValue = 255); cor3 <- rgb(239, 199, 77, maxColorValue = 255); cor4 <- rgb(227, 120, 64, maxColorValue = 255) 
+
+update_geom_defaults("bar",   list(fill = cor1))
+
+#logoCFAMG <- readPNG("CFAMGlogo.png")
+#logoTCE <- readPNG("TCElogo.png")
+#logoCFAMG2 <- readPNG("CFAMG2logo.png")
+#logo4 <- rasterGrob(logoCFAMG, interpolate = TRUE)
+#logo3 <- rasterGrob(logoTCE, interpolate = TRUE)
+#logo2 <- rasterGrob(logoCFAMG2, interpolate = TRUE)
